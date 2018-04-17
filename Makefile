@@ -6,7 +6,7 @@
 #    By: mcanal <mcanal@student.42.fr>              +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2014/11/29 13:16:03 by mcanal            #+#    #+#              #
-#    Updated: 2018/04/17 23:05:13 by mc               ###   ########.fr        #
+#    Updated: 2018/04/17 23:58:53 by mc               ###   ########.fr        #
 #                                                                              #
 #******************************************************************************#
 
@@ -129,7 +129,7 @@ fclean: clean
 	test -d $(OBJ_DIR) && find $(OBJ_DIR) -type d | sort -r | xargs $(RMDIR) || true
 	$(RM) $(PROJECT) $(PROJECT:.so=.san.so) $(PROJECT:.so=.dev.so)
 	$(RM) $(TARGET) $(TARGET:.so=.san.so) $(TARGET:.so=.dev.so)
-	$(RM) test{,.san,.dev}
+	$(RM) test.{san,dev}.sh test[0-5] test3_bis
 
 # some people like it real clean
 mrproper:
@@ -142,21 +142,21 @@ re: fclean
 
 # run tests on project
 test: all
-	printf "#!/bin/bash -ex\n\n" > test
-	chmod a+x test
-	./test
+	./test.sh
 
 # run tests on project (debug mode)
 testdev: dev
-	printf "#!/bin/bash -ex\n\n" > test.dev
-	chmod a+x test.dev
-	./test.dev
+	cp test.sh test.dev.sh
+	sed -i 's/libft_malloc/libft_malloc.dev/g' test.dev.sh
+	sed -i 's/extra/extra -g/g' test.dev.sh
+	./test.dev.sh
 
 # run tests on project (sanitize mode)
 testsan: san
-	printf "#!/bin/bash -ex\n\n" > test.san
-	chmod a+x test.san
-	./test.san
+	cp test.sh test.san.sh
+	sed -i 's/libft_malloc/libft_malloc.san/g' test.san.sh
+	sed -i 's/extra/extra -g -fsanitize=address,undefined/g' test.san.sh
+	./test.san.sh
 
 
 ##

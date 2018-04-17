@@ -1,2 +1,6 @@
 libft_malloc*.so
 obj
+test[0-5]
+test3_bis
+test.dev.sh
+test.san.sh
