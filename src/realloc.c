@@ -6,7 +6,7 @@
 /*   By: mc <mc.maxcanal@gmail.com>                 +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/04/17 21:07:40 by mc                #+#    #+#             */
-/*   Updated: 2018/04/18 00:02:25 by mc               ###   ########.fr       */
+/*   Updated: 2018/04/18 01:00:48 by mc               ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,11 +19,9 @@ void            *realloc(void *ptr, size_t size)
     size_t  old_size;
 
     new = malloc(size);
-	if (!new)
-		return (NULL);
-	if (ptr)
+	if (new && ptr)
 	{
-        old_size = ((t_lst *)((t_byte *)ptr - sizeof(t_lst) + 1))->alloc_len;
+        old_size = ((t_lst *)((t_byte *)ptr - sizeof(t_lst) + PADDING))->len;
 		ft_memcpy(new, ptr, (old_size > size) ? size : old_size);
 		free(ptr);
 	}

@@ -6,7 +6,7 @@
 /*   By: mc <mc.maxcanal@gmail.com>                 +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/04/17 21:34:34 by mc                #+#    #+#             */
-/*   Updated: 2018/04/18 00:02:20 by mc               ###   ########.fr       */
+/*   Updated: 2018/04/18 01:00:56 by mc               ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,6 +16,8 @@
 # include "malloc.h"
 # include <unistd.h>
 # include <sys/mman.h>
+
+# define PADDING (sizeof(void *) - sizeof(t_flag))
 
 # define TINY_MAX_SIZE (16 * (size_t)getpagesize())
 # define SMALL_MAX_SIZE (16 * TINY_MAX_SIZE)
@@ -36,9 +38,9 @@ typedef struct s_lst		t_lst;
 struct						s_lst
 {
 	t_lst		*next;
-    size_t      alloc_len;
+    size_t      len;
     t_flag      flag;
-	t_byte		buf[1];
+	t_byte		buf[PADDING];
 };
 
 extern t_lst           *g_lst;

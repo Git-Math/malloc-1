@@ -6,7 +6,7 @@
 #    By: mcanal <mcanal@student.42.fr>              +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2014/11/29 13:16:03 by mcanal            #+#    #+#              #
-#    Updated: 2018/04/17 23:58:53 by mc               ###   ########.fr        #
+#    Updated: 2018/04/18 00:31:37 by mc               ###   ########.fr        #
 #                                                                              #
 #******************************************************************************#
 
@@ -147,14 +147,14 @@ test: all
 # run tests on project (debug mode)
 testdev: dev
 	cp test.sh test.dev.sh
-	sed -i 's/libft_malloc/libft_malloc.dev/g' test.dev.sh
+	sed -i 's/ft_malloc/ft_malloc.dev/g' test.dev.sh
 	sed -i 's/extra/extra -g/g' test.dev.sh
 	./test.dev.sh
 
 # run tests on project (sanitize mode)
 testsan: san
 	cp test.sh test.san.sh
-	sed -i 's/libft_malloc/libft_malloc.san/g' test.san.sh
+	sed -i 's/ft_malloc/ft_malloc.san/g' test.san.sh
 	sed -i 's/extra/extra -g -fsanitize=address,undefined/g' test.san.sh
 	./test.san.sh
 

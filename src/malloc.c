@@ -6,7 +6,7 @@
 /*   By: mc <mc.maxcanal@gmail.com>                 +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/04/17 21:07:26 by mc                #+#    #+#             */
-/*   Updated: 2018/04/17 22:40:14 by mc               ###   ########.fr       */
+/*   Updated: 2018/04/18 01:00:48 by mc               ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,14 +18,14 @@ static void     *alloc(size_t size, t_flag flag)
 {
     t_lst    *l;
 
-    size += sizeof(t_lst) - 1;
+    size += sizeof(t_lst) - PADDING;
     l = (t_lst *)mmap(NULL, size, PROT_READ | PROT_WRITE, \
                MAP_PRIVATE | MAP_ANONYMOUS, -1, 0);
     if (l == MAP_FAILED)
         return (NULL);
     l->next = g_lst;
     g_lst = l;
-    l->alloc_len = size;
+    l->len = size;
     l->flag = flag;
     return (l->buf);
 }

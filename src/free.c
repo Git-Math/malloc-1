@@ -6,7 +6,7 @@
 /*   By: mc <mc.maxcanal@gmail.com>                 +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/04/17 21:06:54 by mc                #+#    #+#             */
-/*   Updated: 2018/04/17 22:48:50 by mc               ###   ########.fr       */
+/*   Updated: 2018/04/18 01:00:48 by mc               ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,5 +28,5 @@ void            free(void *ptr)
     l = find_link(g_lst, ptr);
     if (!l)
         return ;
-    munmap(l, l->alloc_len);
+    munmap(l, l->len);
 }
