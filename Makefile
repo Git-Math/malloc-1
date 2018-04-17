@@ -6,7 +6,7 @@
 #    By: mcanal <mcanal@student.42.fr>              +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2014/11/29 13:16:03 by mcanal            #+#    #+#              #
-#    Updated: 2018/04/17 21:12:53 by mc               ###   ########.fr        #
+#    Updated: 2018/04/17 23:05:13 by mc               ###   ########.fr        #
 #                                                                              #
 #******************************************************************************#
 
@@ -18,7 +18,8 @@
 TARGET = libft_malloc.so
 
 # file-names of the sources
-SRC_NAME = malloc.c free.c realloc.c show_alloc_mem.c
+SRC_NAME = malloc.c free.c realloc.c show_alloc_mem.c \
+			util/ft_memcpy.c
 
 # folder-names of the sources
 SRC_PATH = src
@@ -33,7 +34,7 @@ LDLIBS =
 LDFLAGS = -shared
 
 # compilation flags
-CPPFLAGS =
+CPPFLAGS = -fPIC
 
 
 ##
@@ -106,12 +107,14 @@ mecry:
 
 # build for gdb/valgrind debugging
 dev:
-	+$(MAKE) $(PROJECT).dev "PROJECT = $(PROJECT).dev" "TARGET = $(TARGET:.so=.dev.so)" \
+	+$(MAKE) $(PROJECT:.so=.dev.so) \
+		"PROJECT = $(PROJECT:.so=.dev.so)" "TARGET = $(TARGET:.so=.dev.so)" \
 		"CFLAGS = $(DCFLAGS)" "OBJ_PATH = $(OBJ_DIR)/dev"
 
 # build for runtime debugging (fsanitize)
 san:
-	+$(MAKE) $(PROJECT).san "PROJECT = $(PROJECT).san" "TARGET = $(TARGET:.so=.san.so)" \
+	+$(MAKE) $(PROJECT:.so=.san.so) \
+		"PROJECT = $(PROJECT:.so=.san.so)" "TARGET = $(TARGET:.so=.san.so)" \
 		"CFLAGS = $(SCFLAGS)" "OBJ_PATH = $(OBJ_DIR)/san"
 
 # remove all generated .o and .d
@@ -124,7 +127,7 @@ clean:
 # remove the generated binary, and all .o and .d
 fclean: clean
 	test -d $(OBJ_DIR) && find $(OBJ_DIR) -type d | sort -r | xargs $(RMDIR) || true
-	$(RM) $(PROJECT){,.san,.dev}
+	$(RM) $(PROJECT) $(PROJECT:.so=.san.so) $(PROJECT:.so=.dev.so)
 	$(RM) $(TARGET) $(TARGET:.so=.san.so) $(TARGET:.so=.dev.so)
 	$(RM) test{,.san,.dev}
 

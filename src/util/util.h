@@ -1,23 +1,20 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   malloc.h                                           :+:      :+:    :+:   */
+/*   util.h                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: mc <mc.maxcanal@gmail.com>                 +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2018/04/17 21:03:16 by mc                #+#    #+#             */
-/*   Updated: 2018/04/17 21:35:54 by mc               ###   ########.fr       */
+/*   Created: 2018/04/17 22:45:53 by mc                #+#    #+#             */
+/*   Updated: 2018/04/17 22:56:17 by mc               ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef MALLOC_H
-# define MALLOC_H
+#ifndef UTIL_H
+# define UTIL_H
 
 # include <stdlib.h>
 
-void    free(void *ptr);
-void    *malloc(size_t size);
-void    *realloc(void *ptr, size_t size);
-void    show_alloc_mem(void);
+void			*ft_memcpy(void *dest, const void *src, size_t n);
 
 #endif
