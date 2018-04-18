@@ -6,7 +6,7 @@
 /*   By: mc <mc.maxcanal@gmail.com>                 +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/04/17 21:07:26 by mc                #+#    #+#             */
-/*   Updated: 2018/04/18 21:40:41 by mc               ###   ########.fr       */
+/*   Updated: 2018/04/18 22:17:06 by mc               ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -74,10 +74,10 @@ static void     split_block(t_block *block, size_t free_space)
 {
 	t_block *new;
 
-    if (free_space < sizeof(t_block) + 0x200)
+    if (free_space < sizeof(t_block) + 0x20)
         return ;
     new = (t_block *)((size_t)((t_byte *)block->buf \
-                               + block->size - free_space + 0x100) & ~0xff);
+                               + block->size - free_space + 0x10) & ~0xf);
     new->size = block->size;
     block->size = (size_t)((t_byte *)new - block->buf);
     new->size = new->size - block->size;

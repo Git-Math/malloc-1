@@ -6,7 +6,7 @@
 /*   By: mc <mc.maxcanal@gmail.com>                 +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/04/17 21:06:54 by mc                #+#    #+#             */
-/*   Updated: 2018/04/18 21:56:52 by mc               ###   ########.fr       */
+/*   Updated: 2018/04/18 22:16:17 by mc               ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -66,7 +66,7 @@ void			free(void *ptr)
 {
 	t_block	 *block;
 
-    if (!ptr)
+    if (!ptr || (size_t)ptr % sizeof(void *))
         return ;
     block = (t_block *)((t_byte *)ptr - sizeof(t_block) + PADDING);
     if (block->size > SMALL_MAX_SIZE * g_mem.page_size)

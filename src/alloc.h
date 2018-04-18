@@ -6,7 +6,7 @@
 /*   By: mc <mc.maxcanal@gmail.com>                 +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/04/17 21:34:34 by mc                #+#    #+#             */
-/*   Updated: 2018/04/18 19:05:45 by mc               ###   ########.fr       */
+/*   Updated: 2018/04/18 22:13:35 by mc               ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,7 +23,7 @@
 # define TINY_MAX_SIZE 1
 # define SMALL_MAX_SIZE (sizeof(void *) * TINY_MAX_SIZE)
 
-# define PADDING (sizeof(void *) - sizeof(t_bool))
+# define PADDING (sizeof(void *))
 
 # define MAX_PAGE_TYPES 3
 enum						e_page_size
@@ -44,6 +44,7 @@ struct						s_block
 	t_block		*next;
 	size_t		size;
 	t_bool		is_free;
+	int			padding;
 	t_byte		buf[PADDING];
 };
 
