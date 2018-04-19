@@ -6,7 +6,7 @@
 /*   By: mc <mc.maxcanal@gmail.com>                 +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/04/17 21:34:34 by mc                #+#    #+#             */
-/*   Updated: 2018/04/18 22:13:35 by mc               ###   ########.fr       */
+/*   Updated: 2018/04/20 00:12:39 by mc               ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,7 +20,7 @@
 # define TRUE 1
 # define FALSE 0
 
-# define TINY_MAX_SIZE 1
+# define TINY_MAX_SIZE (sizeof(void *))
 # define SMALL_MAX_SIZE (sizeof(void *) * TINY_MAX_SIZE)
 
 # define PADDING (sizeof(void *))

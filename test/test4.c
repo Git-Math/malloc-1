@@ -1,4 +1,8 @@
-#include "malloc.h"
+#ifdef CTRL
+# include <stdlib.h>
+#else
+# include "malloc.h"
+#endif
 #include <unistd.h>
 #include <string.h>
 
@@ -15,7 +19,7 @@ int		main()
 
     addr = malloc(16);
     free(NULL);
-    free((void *)addr + 0);
+    free((void *)addr + 5);
     if (realloc((void *)addr + 5, 10) == NULL)
         print("Bonjours\n");
 	return (0);
