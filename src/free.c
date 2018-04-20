@@ -6,12 +6,11 @@
 /*   By: mc <mc.maxcanal@gmail.com>                 +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/04/17 21:06:54 by mc                #+#    #+#             */
-/*   Updated: 2018/04/20 14:53:35 by mc               ###   ########.fr       */
+/*   Updated: 2018/04/20 22:01:19 by mc               ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "alloc.h"
-#include "debug.h"
 
 static int      unalloc_block(t_chunk *chunk, t_block *block, \
                               enum e_page_type e)

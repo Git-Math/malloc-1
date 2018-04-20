@@ -6,7 +6,7 @@
 /*   By: mc <mc.maxcanal@gmail.com>                 +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/04/17 21:34:34 by mc                #+#    #+#             */
-/*   Updated: 2018/04/20 15:19:31 by mc               ###   ########.fr       */
+/*   Updated: 2018/04/20 22:05:51 by mc               ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,12 +15,13 @@
 
 # include "malloc.h"
 # include "util/util.h"
+# include "debug/debug.h"
 
 # include <unistd.h>
 # include <sys/mman.h>
 
 # define TINY_MAX_SIZE (sizeof(void *))
-# define SMALL_MAX_SIZE (sizeof(void *) * TINY_MAX_SIZE)
+# define SMALL_MAX_SIZE (TINY_MAX_SIZE * TINY_MAX_SIZE)
 
 # define PADDING (sizeof(void *))
 

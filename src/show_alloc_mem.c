@@ -6,12 +6,11 @@
 /*   By: mc <mc.maxcanal@gmail.com>                 +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/04/17 21:12:19 by mc                #+#    #+#             */
-/*   Updated: 2018/04/20 21:14:33 by mc               ###   ########.fr       */
+/*   Updated: 2018/04/20 22:01:26 by mc               ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "alloc.h"
-#include "debug.h"
 
 static void     show_block(t_block *block)
 {

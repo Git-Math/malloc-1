@@ -6,14 +6,14 @@
 /*   By: mc <mc.maxcanal@gmail.com>                 +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/04/20 01:24:26 by mc                #+#    #+#             */
-/*   Updated: 2018/04/20 15:28:31 by mc               ###   ########.fr       */
+/*   Updated: 2018/04/20 22:01:48 by mc               ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef DEBUG_H
 # define DEBUG_H
 
-# include "util/util.h"
+# include "../util/util.h"
 
 # define MMAP_DEBUG_ENV "DEBUG_MMAP"
 # define DEFRAG_DEBUG_ENV "DEBUG_DEFRAG"

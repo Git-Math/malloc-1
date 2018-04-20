@@ -25,6 +25,12 @@ int		main()
         addr2[i] = malloc((i + 1) * 64);
     }
 
+#ifndef CTRL
+    for (i = 1; i < P; i++) {
+        free((void *)((size_t)addr2[P - 2] + i));
+    }
+#endif
+
     for (i = 0; i < P; i++) {
         if (!(i % 3)) {
             free(addr1[i]);

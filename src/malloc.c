@@ -6,12 +6,11 @@
 /*   By: mc <mc.maxcanal@gmail.com>                 +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/04/17 21:07:26 by mc                #+#    #+#             */
-/*   Updated: 2018/04/20 14:56:30 by mc               ###   ########.fr       */
+/*   Updated: 2018/04/20 22:01:09 by mc               ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "alloc.h"
-#include "debug.h"
 
 t_chunk				*g_chunks[MAX_PAGE_TYPES] = {0};
 
