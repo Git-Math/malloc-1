@@ -6,7 +6,7 @@
 /*   By: mc <mc.maxcanal@gmail.com>                 +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/04/17 21:06:54 by mc                #+#    #+#             */
-/*   Updated: 2018/04/20 02:04:35 by mc               ###   ########.fr       */
+/*   Updated: 2018/04/20 14:53:35 by mc               ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,16 +14,16 @@
 #include "debug.h"
 
 static int      unalloc_block(t_chunk *chunk, t_block *block, \
-                              enum e_page_size e)
+                              enum e_page_type e)
 {
     t_chunk *unmap_me;
 
     if (!chunk)
         return (-1);
-    if (chunk == g_mem.chunks[e] && chunk->block == block)
+    if (chunk == g_chunks[e] && chunk->block == block)
     {
         unmap_me = chunk;
-        g_mem.chunks[e] = chunk->next;
+        g_chunks[e] = chunk->next;
     }
     else if (chunk->next && chunk->next->block == block)
     {
@@ -36,7 +36,7 @@ static int      unalloc_block(t_chunk *chunk, t_block *block, \
     {
         debug_munmap(unmap_me, \
                         block->size + sizeof(t_chunk) + sizeof(t_block) - PADDING);
-        return (munmap(unmap_me,                                        \
+        return (munmap(unmap_me, \
                    block->size + sizeof(t_chunk) + sizeof(t_block) - PADDING));
     }
     return (unalloc_block(chunk->next, block, e));
@@ -46,7 +46,8 @@ static void     defrag_blocks(t_block *block)
 {
     if (!block)
         return ;
-    if (block->next && block->next->is_free && block->is_free)
+    if (block->next \
+            && (block->next->flag & FREE_FLAG) && (block->flag & FREE_FLAG))
     {
         debug_defrag(block->buf, block->next->buf, \
                      block->size, block->next->size);
@@ -58,14 +59,14 @@ static void     defrag_blocks(t_block *block)
         defrag_blocks(block->next);
 }
 
-static void     defrag(t_chunk *chunk, enum e_page_size e)
+static void     defrag(t_chunk *chunk, enum e_page_type e)
 {
     if (!chunk)
         return ;
     defrag_blocks(chunk->block);
-    if (chunk->block && chunk->block->is_free && !chunk->block->next)
+    if (chunk->block && (chunk->block->flag & FREE_FLAG) && !chunk->block->next)
     {
-        if (!unalloc_block(g_mem.chunks[e], chunk->block, e))
+        if (!unalloc_block(g_chunks[e], chunk->block, e))
             return ;
     }
     else
@@ -78,15 +79,15 @@ void			free(void *ptr)
 
     if (!ptr || (size_t)ptr % sizeof(void *))
         return ;
-    block = (t_block *)((t_byte *)ptr - sizeof(t_block) + PADDING);
-    if (block->size > SMALL_MAX_SIZE * g_mem.page_size)
-        unalloc_block(g_mem.chunks[LARGE], block, LARGE);
+    block = (t_block *)((t_byte *)ptr - sizeof(t_block) + PADDING); //TODO: search block by addr
+    if (block->flag & LARGE_FLAG)
+        unalloc_block(g_chunks[LARGE_TYPE], block, LARGE_TYPE);
     else
     {
-        block->is_free = TRUE;
-        if (block->size <= TINY_MAX_SIZE * g_mem.page_size)
-            defrag(g_mem.chunks[TINY], TINY);
+        block->flag |= FREE_FLAG;
+        if (block->flag & SMALL_FLAG)
+            defrag(g_chunks[SMALL_TYPE], SMALL_TYPE);
         else
-            defrag(g_mem.chunks[SMALL], SMALL);
+            defrag(g_chunks[TINY_TYPE], TINY_TYPE);
     }
 }

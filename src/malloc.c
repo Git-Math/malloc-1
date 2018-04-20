@@ -6,51 +6,31 @@
 /*   By: mc <mc.maxcanal@gmail.com>                 +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/04/17 21:07:26 by mc                #+#    #+#             */
-/*   Updated: 2018/04/20 02:09:44 by mc               ###   ########.fr       */
+/*   Updated: 2018/04/20 14:56:30 by mc               ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "alloc.h"
 #include "debug.h"
 
-t_mem			g_mem = {0};
+t_chunk				*g_chunks[MAX_PAGE_TYPES] = {0};
 
-static t_block  *search_blocks(t_block *block, size_t size)
+static void     split_block(t_block *block, size_t free_space)
 {
-    if (!block)
-        return (NULL);
-    if (block->is_free && block->size >= size)
-        return (block);
-    return (search_blocks(block->next, size));
+	t_block *new;
+
+    if (free_space < sizeof(t_block) + 0x20)
+        return ;
+    new = (t_block *)((size_t)((t_byte *)block->buf \
+                               + block->size - free_space + 0x10) & ~0xf);
+    new->size = block->size;
+    block->size = (size_t)((t_byte *)new - block->buf);
+    new->size = new->size - block->size;
+    new->flag |= FREE_FLAG;
+    new->next = block->next;
+    block->next = new;
+    debug_split(block->buf, new->buf, block->size, new->size);
 }
-
-static t_block  *search_chunks(t_chunk *chunk, size_t size)
-{
-    t_block  *block;
-
-    if (!chunk)
-        return (NULL);
-    block = search_blocks(chunk->block, size);
-    if (block)
-        return (block);
-    return (search_chunks(chunk->next, size));
-}
-
-static t_block  *find_free_block(size_t size, enum e_page_size e)
-{
-    t_block *block;
-
-    if (e == LARGE)
-        return (NULL);
-    if (e == TINY)
-    {
-        block = search_chunks(g_mem.chunks[TINY], size);
-        if (block)
-            return (block);
-    }
-    return search_chunks(g_mem.chunks[SMALL], size);
-}
-
 
 static t_block  *alloc_chunk(t_chunk **chunk_list, size_t size)
 {
@@ -71,57 +51,35 @@ static t_block  *alloc_chunk(t_chunk **chunk_list, size_t size)
 	return (chunk->block);
 }
 
-static void     split_block(t_block *block, size_t free_space)
-{
-	t_block *new;
-
-    if (free_space < sizeof(t_block) + 0x20)
-        return ;
-    new = (t_block *)((size_t)((t_byte *)block->buf \
-                               + block->size - free_space + 0x10) & ~0xf);
-    new->size = block->size;
-    block->size = (size_t)((t_byte *)new - block->buf);
-    new->size = new->size - block->size;
-    new->is_free = TRUE;
-    new->next = block->next;
-    block->next = new;
-    debug_split(block->buf, new->buf, block->size, new->size);
-}
-
-static void     *get_buf(size_t size, enum e_page_size e)
+static void     *get_buf(size_t size, size_t chunk_size, enum e_page_type e)
 {
 	t_block *block;
-	size_t  chunk_size;
 
     block = find_free_block(size, e);
     if (block)
         debug_reuse(block->buf, block->size, size);
-    if (!block)
+    else
     {
-        if (e == TINY)
-            chunk_size = TINY_MAX_SIZE * g_mem.page_size;
-        else if (e == SMALL)
-            chunk_size = SMALL_MAX_SIZE * g_mem.page_size;
-        else
-            chunk_size = size;
-        block = alloc_chunk(&g_mem.chunks[e], chunk_size);
+        block = alloc_chunk(&g_chunks[e], chunk_size);
         if (!block)
             return (NULL);
+        block->flag = 1 << (e + 1);
     }
-    block->is_free = FALSE;
+    block->flag &= ~FREE_FLAG;
     split_block(block, block->size - size);
     return (block->buf);
 }
 
 void			*malloc(size_t size)
 {
+    size_t  page_size;
+
 	if (!size)
 		return (NULL);
-    if (!g_mem.page_size)
-        g_mem.page_size = (size_t)getpagesize();
-	if (size <= TINY_MAX_SIZE * g_mem.page_size)
-		return (get_buf(size, TINY));
-	if (size <= SMALL_MAX_SIZE * g_mem.page_size)
-		return (get_buf(size, SMALL));
-	return (get_buf(size, LARGE));
+    page_size = (size_t)getpagesize();
+	if (size <= TINY_MAX_SIZE * page_size)
+		return (get_buf(size, TINY_MAX_SIZE * page_size, TINY_TYPE));
+	if (size <= SMALL_MAX_SIZE * page_size)
+		return (get_buf(size, SMALL_MAX_SIZE * page_size, SMALL_TYPE));
+	return (get_buf(size, size, LARGE_TYPE));
 }

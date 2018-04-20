@@ -6,7 +6,7 @@
 /*   By: mc <mc.maxcanal@gmail.com>                 +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/04/20 01:24:26 by mc                #+#    #+#             */
-/*   Updated: 2018/04/20 02:09:38 by mc               ###   ########.fr       */
+/*   Updated: 2018/04/20 15:28:31 by mc               ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,6 +27,9 @@
 # define CLR_CYAN "\033[36;01m"
 # define CLR_WHITE "\033[37;01m"
 # define CLR_RESET "\033[0m"
+
+void		print_bytes(t_byte *bytes, size_t size, int fd);
+void        print_addr(void *addr, int fd);
 
 void		debug_mmap(void *addr, size_t size);
 void		debug_munmap(void *addr, size_t size);

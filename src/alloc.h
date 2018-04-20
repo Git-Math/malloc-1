@@ -6,7 +6,7 @@
 /*   By: mc <mc.maxcanal@gmail.com>                 +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/04/17 21:34:34 by mc                #+#    #+#             */
-/*   Updated: 2018/04/20 01:27:19 by mc               ###   ########.fr       */
+/*   Updated: 2018/04/20 15:19:31 by mc               ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,34 +19,37 @@
 # include <unistd.h>
 # include <sys/mman.h>
 
-# define TRUE 1
-# define FALSE 0
-
 # define TINY_MAX_SIZE (sizeof(void *))
 # define SMALL_MAX_SIZE (sizeof(void *) * TINY_MAX_SIZE)
 
 # define PADDING (sizeof(void *))
 
 # define MAX_PAGE_TYPES 3
-enum						e_page_size
+enum						e_page_type
 {
-	TINY = 0,
-	SMALL = 1,
-	LARGE = 2
+	TINY_TYPE = 0,
+	SMALL_TYPE = 1,
+	LARGE_TYPE = 2
 };
 
-typedef unsigned char		t_byte;
-typedef int					t_bool;
+enum						e_flag
+{
+    ERROR_FLAG = (1 << 0),
+    TINY_FLAG = (1 << 1),
+    SMALL_FLAG = (1 << 2),
+    LARGE_FLAG = (1 << 3),
+    FREE_FLAG = (1 << 4)
+};
+
 typedef struct s_chunk		t_chunk;
 typedef struct s_block		t_block;
-typedef struct s_mem		t_mem;
 
 struct						s_block
 {
 	t_block		*next;
 	size_t		size;
-	t_bool		is_free;
-	int			padding;
+	enum e_flag	flag;
+	t_byte		stupid_padding[PADDING - sizeof(enum e_flag)];
 	t_byte		buf[PADDING];
 };
 
@@ -56,12 +59,9 @@ struct						s_chunk
 	t_block		*block;
 };
 
-struct						s_mem
-{
-	size_t		page_size;
-	t_chunk		*chunks[MAX_PAGE_TYPES];
-};
+extern t_chunk				*g_chunks[MAX_PAGE_TYPES];
 
-extern t_mem				g_mem;
+
+t_block			*find_free_block(size_t size, enum e_page_type e);
 
 #endif
