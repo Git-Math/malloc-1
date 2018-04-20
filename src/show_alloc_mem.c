@@ -6,7 +6,7 @@
 /*   By: mc <mc.maxcanal@gmail.com>                 +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/04/17 21:12:19 by mc                #+#    #+#             */
-/*   Updated: 2018/04/20 22:01:26 by mc               ###   ########.fr       */
+/*   Updated: 2018/04/20 22:37:25 by mc               ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,12 +51,14 @@ void            show_alloc_mem(void)
     size_t  total;
 
     total = 0;
+    pthread_mutex_lock(&g_mutex);
     if (g_chunks[TINY_TYPE])
         total += show_chunks(g_chunks[TINY_TYPE], "TINY");
     if (g_chunks[SMALL_TYPE])
         total += show_chunks(g_chunks[SMALL_TYPE], "SMALL");
     if (g_chunks[LARGE_TYPE])
         total += show_chunks(g_chunks[LARGE_TYPE], "LARGE");
+    pthread_mutex_unlock(&g_mutex);
     ft_putstr_fd("Total : ", 1);
     ft_putnbr_fd(total, 1);
     ft_putstr_fd(" octets\n", 1);

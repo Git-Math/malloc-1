@@ -6,7 +6,7 @@
 /*   By: mc <mc.maxcanal@gmail.com>                 +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/04/17 21:06:54 by mc                #+#    #+#             */
-/*   Updated: 2018/04/20 22:01:19 by mc               ###   ########.fr       */
+/*   Updated: 2018/04/20 22:21:34 by mc               ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -78,6 +78,7 @@ void			free(void *ptr)
 
     if (!ptr || (size_t)ptr % sizeof(void *))
         return ;
+    pthread_mutex_lock(&g_mutex);
     block = (t_block *)((t_byte *)ptr - sizeof(t_block) + PADDING); //TODO: search block by addr
     if (block->flag & LARGE_FLAG)
         unalloc_block(g_chunks[LARGE_TYPE], block, LARGE_TYPE);
@@ -89,4 +90,5 @@ void			free(void *ptr)
         else
             defrag(g_chunks[TINY_TYPE], TINY_TYPE);
     }
+    pthread_mutex_unlock(&g_mutex);
 }

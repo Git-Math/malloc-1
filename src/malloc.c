@@ -6,13 +6,14 @@
 /*   By: mc <mc.maxcanal@gmail.com>                 +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/04/17 21:07:26 by mc                #+#    #+#             */
-/*   Updated: 2018/04/20 22:01:09 by mc               ###   ########.fr       */
+/*   Updated: 2018/04/20 22:25:41 by mc               ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "alloc.h"
 
 t_chunk				*g_chunks[MAX_PAGE_TYPES] = {0};
+pthread_mutex_t      g_mutex = {0};
 
 static void     split_block(t_block *block, size_t free_space)
 {
@@ -72,13 +73,18 @@ static void     *get_buf(size_t size, size_t chunk_size, enum e_page_type e)
 void			*malloc(size_t size)
 {
     size_t  page_size;
+    void    *ptr;
 
 	if (!size)
 		return (NULL);
+    pthread_mutex_lock(&g_mutex);
     page_size = (size_t)getpagesize();
 	if (size <= TINY_MAX_SIZE * page_size)
-		return (get_buf(size, TINY_MAX_SIZE * page_size, TINY_TYPE));
+		ptr = get_buf(size, TINY_MAX_SIZE * page_size, TINY_TYPE);
 	if (size <= SMALL_MAX_SIZE * page_size)
-		return (get_buf(size, SMALL_MAX_SIZE * page_size, SMALL_TYPE));
-	return (get_buf(size, size, LARGE_TYPE));
+		ptr = get_buf(size, SMALL_MAX_SIZE * page_size, SMALL_TYPE);
+    else
+        ptr = get_buf(size, size, LARGE_TYPE);
+    pthread_mutex_unlock(&g_mutex);
+    return (ptr);
 }

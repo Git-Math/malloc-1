@@ -6,7 +6,7 @@
 /*   By: mc <mc.maxcanal@gmail.com>                 +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/04/17 21:34:34 by mc                #+#    #+#             */
-/*   Updated: 2018/04/20 22:05:51 by mc               ###   ########.fr       */
+/*   Updated: 2018/04/20 22:23:35 by mc               ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,6 +19,7 @@
 
 # include <unistd.h>
 # include <sys/mman.h>
+# include <pthread.h>
 
 # define TINY_MAX_SIZE (sizeof(void *))
 # define SMALL_MAX_SIZE (TINY_MAX_SIZE * TINY_MAX_SIZE)
@@ -61,7 +62,7 @@ struct						s_chunk
 };
 
 extern t_chunk				*g_chunks[MAX_PAGE_TYPES];
-
+extern pthread_mutex_t		g_mutex;
 
 t_block			*find_free_block(size_t size, enum e_page_type e);
 

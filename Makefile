@@ -6,7 +6,7 @@
 #    By: mcanal <mcanal@student.42.fr>              +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2014/11/29 13:16:03 by mcanal            #+#    #+#              #
-#    Updated: 2018/04/20 22:00:13 by mc               ###   ########.fr        #
+#    Updated: 2018/04/20 22:27:32 by mc               ###   ########.fr        #
 #                                                                              #
 #******************************************************************************#
 
@@ -31,7 +31,11 @@ SRC_PATH = src
 INC_PATH = inc
 
 # extra libraries needed for linking
+ifeq ($(shell uname), Linux)
+LDLIBS = -pthread
+else
 LDLIBS =
+endif
 
 # linking flags
 LDFLAGS = -shared
