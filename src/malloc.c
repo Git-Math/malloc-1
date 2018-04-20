@@ -6,12 +6,12 @@
 /*   By: mc <mc.maxcanal@gmail.com>                 +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/04/17 21:07:26 by mc                #+#    #+#             */
-/*   Updated: 2018/04/18 22:17:06 by mc               ###   ########.fr       */
+/*   Updated: 2018/04/20 02:09:44 by mc               ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "alloc.h"
-#include "util/util.h"
+#include "debug.h"
 
 t_mem			g_mem = {0};
 
@@ -57,11 +57,12 @@ static t_block  *alloc_chunk(t_chunk **chunk_list, size_t size)
 	t_chunk	 *chunk;
 
     chunk = (t_chunk *)mmap(NULL, \
-                            size +  sizeof(t_chunk) + sizeof(t_block) - PADDING, \
+                            size + sizeof(t_chunk) + sizeof(t_block) - PADDING, \
                             PROT_READ | PROT_WRITE,                     \
-                            MAP_PRIVATE | MAP_ANONYMOUS, -1, 0);
+                            MAP_PRIVATE | MAP_ANONYMOUS, -1, 0); //TODO: round to pagesize
     if (chunk == MAP_FAILED)
         return (NULL);
+    debug_mmap(chunk, size + sizeof(t_chunk) + sizeof(t_block));
     ft_bzero(chunk, sizeof(t_chunk) + sizeof(t_block));
     chunk->next = *chunk_list;
     *chunk_list = chunk;
@@ -84,6 +85,7 @@ static void     split_block(t_block *block, size_t free_space)
     new->is_free = TRUE;
     new->next = block->next;
     block->next = new;
+    debug_split(block->buf, new->buf, block->size, new->size);
 }
 
 static void     *get_buf(size_t size, enum e_page_size e)
@@ -92,6 +94,8 @@ static void     *get_buf(size_t size, enum e_page_size e)
 	size_t  chunk_size;
 
     block = find_free_block(size, e);
+    if (block)
+        debug_reuse(block->buf, block->size, size);
     if (!block)
     {
         if (e == TINY)

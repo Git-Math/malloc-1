@@ -6,11 +6,12 @@
 /*   By: mc <mc.maxcanal@gmail.com>                 +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/04/17 21:06:54 by mc                #+#    #+#             */
-/*   Updated: 2018/04/18 22:16:17 by mc               ###   ########.fr       */
+/*   Updated: 2018/04/20 02:04:35 by mc               ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "alloc.h"
+#include "debug.h"
 
 static int      unalloc_block(t_chunk *chunk, t_block *block, \
                               enum e_page_size e)
@@ -32,8 +33,12 @@ static int      unalloc_block(t_chunk *chunk, t_block *block, \
     else
         unmap_me = NULL;
     if (unmap_me)
+    {
+        debug_munmap(unmap_me, \
+                        block->size + sizeof(t_chunk) + sizeof(t_block) - PADDING);
         return (munmap(unmap_me,                                        \
                    block->size + sizeof(t_chunk) + sizeof(t_block) - PADDING));
+    }
     return (unalloc_block(chunk->next, block, e));
 }
 
@@ -43,6 +48,8 @@ static void     defrag_blocks(t_block *block)
         return ;
     if (block->next && block->next->is_free && block->is_free)
     {
+        debug_defrag(block->buf, block->next->buf, \
+                     block->size, block->next->size);
         block->size += block->next->size + sizeof(t_block) - PADDING;
         block->next = block->next->next;
         defrag_blocks(block);
@@ -57,7 +64,10 @@ static void     defrag(t_chunk *chunk, enum e_page_size e)
         return ;
     defrag_blocks(chunk->block);
     if (chunk->block && chunk->block->is_free && !chunk->block->next)
-        unalloc_block(g_mem.chunks[e], chunk->block, e);
+    {
+        if (!unalloc_block(g_mem.chunks[e], chunk->block, e))
+            return ;
+    }
     else
         defrag(chunk->next, e);
 }

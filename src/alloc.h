@@ -6,7 +6,7 @@
 /*   By: mc <mc.maxcanal@gmail.com>                 +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/04/17 21:34:34 by mc                #+#    #+#             */
-/*   Updated: 2018/04/20 00:12:39 by mc               ###   ########.fr       */
+/*   Updated: 2018/04/20 01:27:19 by mc               ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,6 +14,8 @@
 # define ALLOC_H
 
 # include "malloc.h"
+# include "util/util.h"
+
 # include <unistd.h>
 # include <sys/mman.h>
 
