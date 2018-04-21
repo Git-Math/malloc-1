@@ -6,37 +6,40 @@
 /*   By: mc <mc.maxcanal@gmail.com>                 +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/04/17 21:06:54 by mc                #+#    #+#             */
-/*   Updated: 2018/04/20 22:21:34 by mc               ###   ########.fr       */
+/*   Updated: 2018/04/21 13:03:21 by mc               ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "alloc.h"
 
+static int      munmap_wrapper(void *ptr, size_t size)
+{
+    int ret;
+
+    ret = munmap(ptr, size);
+    if (!ret)
+        debug_munmap(ptr, size);
+    return (ret);
+}
+
 static int      unalloc_block(t_chunk *chunk, t_block *block, \
                               enum e_page_type e)
 {
-    t_chunk *unmap_me;
+    t_chunk *munmap_me;
 
     if (!chunk)
         return (-1);
     if (chunk == g_chunks[e] && chunk->block == block)
     {
-        unmap_me = chunk;
+        munmap_me = chunk;
         g_chunks[e] = chunk->next;
+        return (munmap_wrapper(munmap_me, block->size + META_CHUNK_SIZE));
     }
-    else if (chunk->next && chunk->next->block == block)
+    if (chunk->next && chunk->next->block == block)
     {
-        unmap_me = chunk->next;
+        munmap_me = chunk->next;
         chunk->next = chunk->next->next;
-    }
-    else
-        unmap_me = NULL;
-    if (unmap_me)
-    {
-        debug_munmap(unmap_me, \
-                        block->size + sizeof(t_chunk) + sizeof(t_block) - PADDING);
-        return (munmap(unmap_me, \
-                   block->size + sizeof(t_chunk) + sizeof(t_block) - PADDING));
+        return (munmap_wrapper(munmap_me, block->size + META_CHUNK_SIZE));
     }
     return (unalloc_block(chunk->next, block, e));
 }
@@ -76,10 +79,10 @@ void			free(void *ptr)
 {
 	t_block	 *block;
 
-    if (!ptr || (size_t)ptr % sizeof(void *))
+    if (!ptr || (size_t)ptr % PADDING)
         return ;
     pthread_mutex_lock(&g_mutex);
-    block = (t_block *)((t_byte *)ptr - sizeof(t_block) + PADDING); //TODO: search block by addr
+    block = (t_block *)((t_byte *)ptr - META_BLOCK_SIZE); //TODO: search block by addr
     if (block->flag & LARGE_FLAG)
         unalloc_block(g_chunks[LARGE_TYPE], block, LARGE_TYPE);
     else

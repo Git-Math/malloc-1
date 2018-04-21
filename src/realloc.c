@@ -6,7 +6,7 @@
 /*   By: mc <mc.maxcanal@gmail.com>                 +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/04/17 21:07:40 by mc                #+#    #+#             */
-/*   Updated: 2018/04/20 22:37:18 by mc               ###   ########.fr       */
+/*   Updated: 2018/04/21 13:02:24 by mc               ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,9 +17,9 @@ void			*realloc(void *ptr, size_t size)
 	void	*new;
 	t_block	*block;
 
-    if (!ptr || (size_t)ptr % sizeof(void *))
+    if (!ptr || (size_t)ptr % PADDING)
         return (NULL);
-    block = (t_block *)((t_byte *)ptr - sizeof(t_block) + PADDING); //TODO: search block by addr
+    block = (t_block *)((t_byte *)ptr - META_BLOCK_SIZE); //TODO: search block by addr
 	new = malloc(size);
 	if (new && ptr)
 	{

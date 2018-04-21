@@ -6,7 +6,7 @@
 /*   By: mc <mc.maxcanal@gmail.com>                 +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/04/17 21:34:34 by mc                #+#    #+#             */
-/*   Updated: 2018/04/20 22:23:35 by mc               ###   ########.fr       */
+/*   Updated: 2018/04/21 12:59:29 by mc               ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,10 +21,12 @@
 # include <sys/mman.h>
 # include <pthread.h>
 
-# define TINY_MAX_SIZE (sizeof(void *))
-# define SMALL_MAX_SIZE (TINY_MAX_SIZE * TINY_MAX_SIZE)
+# define TINY_MAX_SIZE 1 //(sizeof(void *))
+# define SMALL_MAX_SIZE (sizeof(void *) * TINY_MAX_SIZE)
 
-# define PADDING (sizeof(void *))
+# define PADDING (sizeof(void *) * 2)
+# define META_BLOCK_SIZE (sizeof(t_block) - PADDING)
+# define META_CHUNK_SIZE (sizeof(t_chunk) + META_BLOCK_SIZE)
 
 # define MAX_PAGE_TYPES 3
 enum						e_page_type
