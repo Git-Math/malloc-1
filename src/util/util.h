@@ -6,7 +6,7 @@
 /*   By: mc <mc.maxcanal@gmail.com>                 +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/04/17 22:45:53 by mc                #+#    #+#             */
-/*   Updated: 2018/04/20 15:19:51 by mc               ###   ########.fr       */
+/*   Updated: 2018/04/22 14:04:55 by mc               ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,5 +25,6 @@ void			ft_bzero(void *s, size_t n);
 size_t			ft_strlen(const char *str);
 void        	ft_putnbr_fd(int n, int fd);
 void        	ft_putstr_fd(char const *s, int fd);
+int     		ft_isprint(int i);
 
 #endif

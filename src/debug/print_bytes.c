@@ -6,7 +6,7 @@
 /*   By: mc <mc.maxcanal@gmail.com>                 +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/04/20 15:04:09 by mc                #+#    #+#             */
-/*   Updated: 2018/04/20 20:38:19 by mc               ###   ########.fr       */
+/*   Updated: 2018/04/22 13:45:47 by mc               ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,12 +27,12 @@ static void print_bytes_wrapper(t_byte *bytes, size_t size, \
     print_bytes_wrapper(bytes + 1, size - 1, fd, hexa);
 }
 
-void print_bytes(t_byte *bytes, size_t size, int fd)
+void        print_bytes(t_byte *bytes, size_t size, int fd)
 {
     print_bytes_wrapper(bytes, size, fd, HEXA);
 }
 
-void print_addr(void *addr, int fd)
+void        print_addr(void *addr, int fd)
 {
     size_t   bytes;
 

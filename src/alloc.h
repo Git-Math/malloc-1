@@ -6,7 +6,7 @@
 /*   By: mc <mc.maxcanal@gmail.com>                 +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/04/17 21:34:34 by mc                #+#    #+#             */
-/*   Updated: 2018/04/21 12:59:29 by mc               ###   ########.fr       */
+/*   Updated: 2018/04/21 13:15:12 by mc               ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,7 +21,7 @@
 # include <sys/mman.h>
 # include <pthread.h>
 
-# define TINY_MAX_SIZE 1 //(sizeof(void *))
+# define TINY_MAX_SIZE 4 //(sizeof(void *))
 # define SMALL_MAX_SIZE (sizeof(void *) * TINY_MAX_SIZE)
 
 # define PADDING (sizeof(void *) * 2)
