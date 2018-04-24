@@ -6,7 +6,7 @@
 /*   By: mc <mc.maxcanal@gmail.com>                 +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/04/17 21:07:26 by mc                #+#    #+#             */
-/*   Updated: 2018/04/22 15:01:09 by mc               ###   ########.fr       */
+/*   Updated: 2018/04/24 14:50:11 by mc               ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,11 +18,14 @@ pthread_mutex_t      g_mutex = {0};
 static void     split_block(t_block *block, size_t free_space)
 {
 	t_block *new;
+    size_t  offset;
 
     if (free_space < sizeof(t_block) + PADDING)
         return ;
-    new = (t_block *)((size_t)((t_byte *)block->buf \
-                               + block->size - free_space + 0x10) & ~0xf);
+    offset = block->size - free_space;
+    if (offset % PADDING)
+        offset = (offset + 0x10) & ~0xf;
+    new = (t_block *)((size_t)((t_byte *)block->buf + offset));
     new->size = block->size;
     block->size = (size_t)((t_byte *)new - block->buf);
     new->size = new->size - block->size - META_BLOCK_SIZE;

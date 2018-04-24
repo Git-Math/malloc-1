@@ -7,7 +7,7 @@
 
 int		main()
 {
-    memcpy(malloc(256), "hello\n\xff\x1\x0", 8);
+    memcpy(malloc(42), "hello\n\xff\x0\x1", 9);
 #ifndef CTRL
     show_alloc_mem_ex();
 #endif
