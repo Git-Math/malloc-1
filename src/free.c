@@ -6,7 +6,7 @@
 /*   By: mc <mc.maxcanal@gmail.com>                 +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/04/17 21:06:54 by mc                #+#    #+#             */
-/*   Updated: 2018/04/21 13:03:21 by mc               ###   ########.fr       */
+/*   Updated: 2018/04/25 06:37:01 by mc               ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -82,16 +82,19 @@ void			free(void *ptr)
     if (!ptr || (size_t)ptr % PADDING)
         return ;
     pthread_mutex_lock(&g_mutex);
-    block = (t_block *)((t_byte *)ptr - META_BLOCK_SIZE); //TODO: search block by addr
-    if (block->flag & LARGE_FLAG)
-        unalloc_block(g_chunks[LARGE_TYPE], block, LARGE_TYPE);
-    else
+    block = find_block_by_addr(ptr);
+    if (block)
     {
-        block->flag |= FREE_FLAG;
-        if (block->flag & SMALL_FLAG)
-            defrag(g_chunks[SMALL_TYPE], SMALL_TYPE);
+        if (block->flag & LARGE_FLAG)
+            unalloc_block(g_chunks[LARGE_TYPE], block, LARGE_TYPE);
         else
-            defrag(g_chunks[TINY_TYPE], TINY_TYPE);
+        {
+            block->flag |= FREE_FLAG;
+            if (block->flag & SMALL_FLAG)
+                defrag(g_chunks[SMALL_TYPE], SMALL_TYPE);
+            else
+                defrag(g_chunks[TINY_TYPE], TINY_TYPE);
+        }
     }
     pthread_mutex_unlock(&g_mutex);
 }

@@ -6,7 +6,7 @@
 /*   By: mc <mc.maxcanal@gmail.com>                 +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/04/17 21:34:34 by mc                #+#    #+#             */
-/*   Updated: 2018/04/21 13:15:12 by mc               ###   ########.fr       */
+/*   Updated: 2018/04/25 05:55:25 by mc               ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,7 +21,7 @@
 # include <sys/mman.h>
 # include <pthread.h>
 
-# define TINY_MAX_SIZE 4 //(sizeof(void *))
+# define TINY_MAX_SIZE (sizeof(void *))
 # define SMALL_MAX_SIZE (sizeof(void *) * TINY_MAX_SIZE)
 
 # define PADDING (sizeof(void *) * 2)
@@ -67,5 +67,6 @@ extern t_chunk				*g_chunks[MAX_PAGE_TYPES];
 extern pthread_mutex_t		g_mutex;
 
 t_block			*find_free_block(size_t size, enum e_page_type e);
+t_block			*find_block_by_addr(void *addr);
 
 #endif
