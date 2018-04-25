@@ -6,7 +6,7 @@
 #    By: mcanal <mcanal@student.42.fr>              +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2014/11/29 13:16:03 by mcanal            #+#    #+#              #
-#    Updated: 2018/04/25 05:56:02 by mc               ###   ########.fr        #
+#    Updated: 2018/04/25 07:21:48 by mc               ###   ########.fr        #
 #                                                                              #
 #******************************************************************************#
 
@@ -29,6 +29,9 @@ SRC_PATH = src
 
 # folder-names containing headers files
 INC_PATH = inc
+
+# where are your tests?
+TEST_DIR = test
 
 # extra libraries needed for linking
 ifeq ($(shell uname), Linux)
@@ -141,6 +144,7 @@ fclean: clean
 # some people like it real clean
 mrproper:
 	$(RM) -r $(OBJ_DIR)
+	$(RM) -r $(TEST_DIR)
 	+$(MAKE) fclean
 
 # clean build and recompile

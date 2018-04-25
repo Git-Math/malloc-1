@@ -6,3 +6,4 @@ ctrl[0-7]
 ctrl3_bis
 test.dev.sh
 test.san.sh
+test/

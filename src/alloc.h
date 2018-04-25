@@ -6,7 +6,7 @@
 /*   By: mc <mc.maxcanal@gmail.com>                 +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/04/17 21:34:34 by mc                #+#    #+#             */
-/*   Updated: 2018/04/25 05:55:25 by mc               ###   ########.fr       */
+/*   Updated: 2018/04/25 07:13:50 by mc               ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,11 +38,11 @@ enum						e_page_type
 
 enum						e_flag
 {
-    ERROR_FLAG = (1 << 0),
-    TINY_FLAG = (1 << 1),
-    SMALL_FLAG = (1 << 2),
-    LARGE_FLAG = (1 << 3),
-    FREE_FLAG = (1 << 4)
+	ERROR_FLAG = (1 << 0),
+	TINY_FLAG = (1 << 1),
+	SMALL_FLAG = (1 << 2),
+	LARGE_FLAG = (1 << 3),
+	FREE_FLAG = (1 << 4)
 };
 
 typedef struct s_chunk		t_chunk;
@@ -66,7 +66,7 @@ struct						s_chunk
 extern t_chunk				*g_chunks[MAX_PAGE_TYPES];
 extern pthread_mutex_t		g_mutex;
 
-t_block			*find_free_block(size_t size, enum e_page_type e);
-t_block			*find_block_by_addr(void *addr);
+t_block						*find_free_block(size_t size, enum e_page_type e);
+t_block						*find_block_by_addr(void *addr);
 
 #endif

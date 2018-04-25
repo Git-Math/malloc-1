@@ -6,7 +6,7 @@
 /*   By: mc <mc.maxcanal@gmail.com>                 +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/04/20 01:24:26 by mc                #+#    #+#             */
-/*   Updated: 2018/04/22 14:27:28 by mc               ###   ########.fr       */
+/*   Updated: 2018/04/25 07:06:47 by mc               ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,14 +29,14 @@
 # define CLR_RESET "\033[0m"
 
 void		print_bytes(t_byte *bytes, size_t size, int fd);
-void        print_addr(void *addr, int fd);
+void		print_addr(void *addr, int fd);
 
 void		debug_mmap(void *addr, size_t size);
 void		debug_munmap(void *addr, size_t size);
 void		debug_defrag(void *addr1, void *addr2, size_t size1, size_t size2);
 void		debug_split(void *addr1, void *addr2, size_t size1, size_t size2);
-void        debug_reuse(void *addr, size_t size1, size_t size2);
+void		debug_reuse(void *addr, size_t size1, size_t size2);
 
-void        hex_dump(t_byte *bytes, size_t size, int fd);
+void		hex_dump(t_byte *bytes, size_t size, int fd);
 
 #endif
