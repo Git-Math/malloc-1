@@ -6,7 +6,7 @@
 /*   By: mc <mc.maxcanal@gmail.com>                 +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/04/17 21:34:34 by mc                #+#    #+#             */
-/*   Updated: 2018/04/25 07:13:50 by mc               ###   ########.fr       */
+/*   Updated: 2018/04/27 18:08:38 by mcanal           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,6 +29,7 @@
 # define META_CHUNK_SIZE (sizeof(t_chunk) + META_BLOCK_SIZE)
 
 # define MAX_PAGE_TYPES 3
+
 enum						e_page_type
 {
 	TINY_TYPE = 0,

@@ -6,7 +6,7 @@
 /*   By: mcanal <mc.maxcanal@gmail.com>             +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/04/27 16:01:55 by mcanal            #+#    #+#             */
-/*   Updated: 2018/04/27 16:07:13 by mcanal           ###   ########.fr       */
+/*   Updated: 2018/04/27 18:09:23 by mcanal           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,8 +14,9 @@
 
 char			*get_env(char *key)
 {
-	char	**env;
-	size_t	len;
+	extern char	**environ;
+	char		**env;
+	size_t		len;
 
 	if (!environ)
 		return (NULL);

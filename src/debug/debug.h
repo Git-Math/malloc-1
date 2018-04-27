@@ -6,7 +6,7 @@
 /*   By: mc <mc.maxcanal@gmail.com>                 +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/04/20 01:24:26 by mc                #+#    #+#             */
-/*   Updated: 2018/04/27 16:02:33 by mcanal           ###   ########.fr       */
+/*   Updated: 2018/04/27 18:09:05 by mcanal           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,8 +27,6 @@
 # define CLR_CYAN "\033[36;01m"
 # define CLR_WHITE "\033[37;01m"
 # define CLR_RESET "\033[0m"
-
-extern char	**environ;
 
 void		print_bytes(t_byte *bytes, size_t size, int fd);
 void		print_addr(void *addr, int fd);

@@ -6,7 +6,7 @@
 /*   By: mc <mc.maxcanal@gmail.com>                 +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/04/20 14:56:53 by mc                #+#    #+#             */
-/*   Updated: 2018/04/25 07:12:35 by mc               ###   ########.fr       */
+/*   Updated: 2018/04/27 18:09:39 by mcanal           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,5 +45,5 @@ t_block			*find_free_block(size_t size, enum e_page_type e)
 		if (block)
 			return (block);
 	}
-	return search_chunks(g_chunks[SMALL_TYPE], size);
+	return (search_chunks(g_chunks[SMALL_TYPE], size));
 }
