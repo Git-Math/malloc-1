@@ -1,8 +1,8 @@
 libft_malloc*.so
 obj
-test[0-7]
+test[0-8]
 test3_bis
-ctrl[0-7]
+ctrl[0-8]
 ctrl3_bis
 test.dev.sh
 test.san.sh

@@ -6,21 +6,11 @@
 /*   By: mc <mc.maxcanal@gmail.com>                 +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/04/17 21:06:54 by mc                #+#    #+#             */
-/*   Updated: 2018/04/25 07:11:55 by mc               ###   ########.fr       */
+/*   Updated: 2018/04/28 01:37:17 by mc               ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "alloc.h"
-
-static int		munmap_wrapper(void *ptr, size_t size)
-{
-	int ret;
-
-	ret = munmap(ptr, size);
-	if (!ret)
-		debug_munmap(ptr, size);
-	return (ret);
-}
 
 static int		unalloc_block(t_chunk *chunk, t_block *block, \
 								enum e_page_type e)
@@ -33,13 +23,15 @@ static int		unalloc_block(t_chunk *chunk, t_block *block, \
 	{
 		munmap_me = chunk;
 		g_chunks[e] = chunk->next;
-		return (munmap_wrapper(munmap_me, block->size + META_CHUNK_SIZE));
+		debug_munmap(munmap_me, block->size + META_CHUNK_SIZE);
+		return (munmap(munmap_me, block->size + META_CHUNK_SIZE));
 	}
 	if (chunk->next && chunk->next->block == block)
 	{
 		munmap_me = chunk->next;
 		chunk->next = chunk->next->next;
-		return (munmap_wrapper(munmap_me, block->size + META_CHUNK_SIZE));
+		debug_munmap(munmap_me, block->size + META_CHUNK_SIZE);
+		return (munmap(munmap_me, block->size + META_CHUNK_SIZE));
 	}
 	return (unalloc_block(chunk->next, block, e));
 }
@@ -75,26 +67,30 @@ static void		defrag(t_chunk *chunk, enum e_page_type e)
 		defrag(chunk->next, e);
 }
 
-void			free(void *ptr)
+void			nolock_free(void *ptr)
 {
 	t_block	*block;
 
 	if (!ptr || (size_t)ptr % PADDING)
 		return ;
-	pthread_mutex_lock(&g_mutex);
 	block = find_block_by_addr(ptr);
-	if (block)
+	if (!block)
+		return ;
+	if (block->flag & LARGE_FLAG)
+		unalloc_block(g_chunks[LARGE_TYPE], block, LARGE_TYPE);
+	else
 	{
-		if (block->flag & LARGE_FLAG)
-			unalloc_block(g_chunks[LARGE_TYPE], block, LARGE_TYPE);
+		block->flag |= FREE_FLAG;
+		if (block->flag & SMALL_FLAG)
+			defrag(g_chunks[SMALL_TYPE], SMALL_TYPE);
 		else
-		{
-			block->flag |= FREE_FLAG;
-			if (block->flag & SMALL_FLAG)
-				defrag(g_chunks[SMALL_TYPE], SMALL_TYPE);
-			else
-				defrag(g_chunks[TINY_TYPE], TINY_TYPE);
-		}
+			defrag(g_chunks[TINY_TYPE], TINY_TYPE);
 	}
+}
+
+void			free(void *ptr)
+{
+	pthread_mutex_lock(&g_mutex);
+	nolock_free(ptr);
 	pthread_mutex_unlock(&g_mutex);
 }

@@ -6,7 +6,7 @@
 /*   By: mc <mc.maxcanal@gmail.com>                 +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/04/17 21:34:34 by mc                #+#    #+#             */
-/*   Updated: 2018/04/27 19:33:39 by mcanal           ###   ########.fr       */
+/*   Updated: 2018/04/28 01:36:09 by mc               ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -70,5 +70,8 @@ extern pthread_mutex_t		g_mutex;
 t_block						*find_free_block(size_t size, enum e_page_type e);
 t_block						*find_block_by_addr(void *addr);
 void						sort_list(void);
+
+void						*nolock_malloc(size_t size);
+void						nolock_free(void *ptr);
 
 #endif

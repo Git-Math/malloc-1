@@ -6,7 +6,7 @@
 /*   By: mc <mc.maxcanal@gmail.com>                 +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/04/17 21:07:26 by mc                #+#    #+#             */
-/*   Updated: 2018/04/27 19:51:17 by mcanal           ###   ########.fr       */
+/*   Updated: 2018/04/28 01:43:30 by mc               ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,7 +48,7 @@ static t_block	*alloc_chunk(t_chunk **chunk_list, size_t buf_size)
 	ft_bzero(chunk, sizeof(t_chunk) + sizeof(t_block));
 	chunk->next = *chunk_list;
 	*chunk_list = chunk;
-	chunk->block = (t_block *)((t_byte *)chunk + sizeof(t_chunk));
+	chunk->block = (t_block *)(chunk + 1);
 	chunk->block->size = buf_size;
 	return (chunk->block);
 }
@@ -67,28 +67,34 @@ static void		*get_buf(size_t size, size_t buf_size, enum e_page_type e)
 			return (NULL);
 		block->flag = 1 << (e + 1);
 	}
-	block->flag &= ~FREE_FLAG;
+	block->flag &= (enum e_flag)~FREE_FLAG;
 	split_block(block, block->size - size);
 	return (block->buf);
 }
 
-void			*malloc(size_t size)
+void			*nolock_malloc(size_t size)
 {
 	size_t	tiny_buf_size;
 	size_t	small_buf_size;
-	void	*ptr;
 
 	if (!size)
 		return (NULL);
-	pthread_mutex_lock(&g_mutex);
 	tiny_buf_size = TINY_MAX_SIZE * (size_t)getpagesize() - META_CHUNK_SIZE;
 	small_buf_size = SMALL_MAX_SIZE * (size_t)getpagesize() - META_CHUNK_SIZE;
 	if (size <= tiny_buf_size)
-		ptr = get_buf(size, tiny_buf_size, TINY_TYPE);
+		return (get_buf(size, tiny_buf_size, TINY_TYPE));
 	else if (size <= small_buf_size)
-		ptr = get_buf(size, small_buf_size, SMALL_TYPE);
+		return (get_buf(size, small_buf_size, SMALL_TYPE));
 	else
-		ptr = get_buf(size, size, LARGE_TYPE);
+		return (get_buf(size, size, LARGE_TYPE));
+}
+
+void			*malloc(size_t size)
+{
+	void	*ptr;
+
+	pthread_mutex_lock(&g_mutex);
+	ptr = nolock_malloc(size);
 	pthread_mutex_unlock(&g_mutex);
 	return (ptr);
 }

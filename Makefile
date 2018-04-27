@@ -6,7 +6,7 @@
 #    By: mcanal <mcanal@student.42.fr>              +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2014/11/29 13:16:03 by mcanal            #+#    #+#              #
-#    Updated: 2018/04/27 19:33:13 by mcanal           ###   ########.fr        #
+#    Updated: 2018/04/28 00:50:23 by mc               ###   ########.fr        #
 #                                                                              #
 #******************************************************************************#
 
@@ -139,7 +139,7 @@ fclean: clean
 	test -d $(OBJ_DIR) && find $(OBJ_DIR) -type d | sort -r | xargs $(RMDIR) || true
 	$(RM) $(PROJECT) $(PROJECT:.so=.san.so) $(PROJECT:.so=.dev.so)
 	$(RM) $(TARGET) $(TARGET:.so=.san.so) $(TARGET:.so=.dev.so)
-	$(RM) test.{san,dev}.sh test[0-7] test3_bis ctrl[0-7] ctrl3_bis
+	$(RM) test.{san,dev}.sh test[0-8] test3_bis ctrl[0-8] ctrl3_bis
 	$(RM) -r *.dSYM
 
 # some people like it real clean
