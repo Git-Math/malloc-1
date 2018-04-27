@@ -6,7 +6,7 @@
 /*   By: mc <mc.maxcanal@gmail.com>                 +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/04/17 21:12:19 by mc                #+#    #+#             */
-/*   Updated: 2018/04/27 19:31:02 by mcanal           ###   ########.fr       */
+/*   Updated: 2018/04/27 19:50:14 by mcanal           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,7 +22,7 @@ static size_t		count_blocks(t_block *block, size_t size, int with_hexdump)
 		ft_putstr_fd(" - ", 1);
 		print_addr(block->buf + block->size, 1);
 		ft_putstr_fd(" : ", 1);
-		ft_putnbr_fd(block->size, 1);
+		ft_putnbr_fd((int)block->size, 1);
 		ft_putstr_fd(" octets\n", 1);
 		if (with_hexdump)
 			hex_dump(block->buf, block->size, 1);
@@ -63,7 +63,7 @@ void				show_alloc_mem(void)
 		total += show_chunks(g_chunks[LARGE_TYPE], "LARGE", 0);
 	pthread_mutex_unlock(&g_mutex);
 	ft_putstr_fd("Total : ", 1);
-	ft_putnbr_fd(total, 1);
+	ft_putnbr_fd((int)total, 1);
 	ft_putstr_fd(" octets\n", 1);
 }
 
@@ -82,6 +82,6 @@ void				show_alloc_mem_ex(void)
 		total += show_chunks(g_chunks[LARGE_TYPE], "LARGE", 1);
 	pthread_mutex_unlock(&g_mutex);
 	ft_putstr_fd("Total : ", 1);
-	ft_putnbr_fd(total, 1);
+	ft_putnbr_fd((int)total, 1);
 	ft_putstr_fd(" octets\n", 1);
 }
