@@ -6,7 +6,7 @@
 /*   By: mc <mc.maxcanal@gmail.com>                 +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/04/17 21:12:19 by mc                #+#    #+#             */
-/*   Updated: 2018/04/25 07:14:36 by mc               ###   ########.fr       */
+/*   Updated: 2018/04/27 19:31:02 by mcanal           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,6 +54,7 @@ void				show_alloc_mem(void)
 
 	total = 0;
 	pthread_mutex_lock(&g_mutex);
+	sort_list();
 	if (g_chunks[TINY_TYPE])
 		total += show_chunks(g_chunks[TINY_TYPE], "TINY", 0);
 	if (g_chunks[SMALL_TYPE])
@@ -72,6 +73,7 @@ void				show_alloc_mem_ex(void)
 
 	total = 0;
 	pthread_mutex_lock(&g_mutex);
+	sort_list();
 	if (g_chunks[TINY_TYPE])
 		total += show_chunks(g_chunks[TINY_TYPE], "TINY", 1);
 	if (g_chunks[SMALL_TYPE])

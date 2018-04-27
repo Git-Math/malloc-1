@@ -14,4 +14,8 @@ for i in 0 1 2 3 3_bis 4 5 6 7; do
                 <(/usr/bin/time "-$TIME_FLAG" "./ctrl$i" 2>&1)
 done
 
+PAGE_TEST0="$(./run.sh /usr/bin/time -l ./test0 2>&1 | grep 'page rec' | cut -dp -f1)"
+PAGE_TEST1="$(./run.sh /usr/bin/time -l ./test1 2>&1 | grep 'page rec' | cut -dp -f1)"
+echo "$PAGE_TEST1 - $PAGE_TEST0" | bc
+
 exit 0 # eheh
