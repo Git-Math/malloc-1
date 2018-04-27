@@ -6,7 +6,7 @@
 #    By: mcanal <mcanal@student.42.fr>              +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2014/11/29 13:16:03 by mcanal            #+#    #+#              #
-#    Updated: 2018/04/27 16:01:32 by mcanal           ###   ########.fr        #
+#    Updated: 2018/04/27 17:42:11 by mcanal           ###   ########.fr        #
 #                                                                              #
 #******************************************************************************#
 
@@ -140,6 +140,7 @@ fclean: clean
 	$(RM) $(PROJECT) $(PROJECT:.so=.san.so) $(PROJECT:.so=.dev.so)
 	$(RM) $(TARGET) $(TARGET:.so=.san.so) $(TARGET:.so=.dev.so)
 	$(RM) test.{san,dev}.sh test[0-7] test3_bis ctrl[0-7] ctrl3_bis
+	$(RM) -r *.dSYM
 
 # some people like it real clean
 mrproper:
