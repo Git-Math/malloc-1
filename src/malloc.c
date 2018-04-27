@@ -6,14 +6,14 @@
 /*   By: mc <mc.maxcanal@gmail.com>                 +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/04/17 21:07:26 by mc                #+#    #+#             */
-/*   Updated: 2018/04/25 07:11:13 by mc               ###   ########.fr       */
+/*   Updated: 2018/04/26 20:49:55 by mcanal           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "alloc.h"
 
 t_chunk			*g_chunks[MAX_PAGE_TYPES] = {0};
-pthread_mutex_t	g_mutex = {0};
+pthread_mutex_t	g_mutex;
 
 static void		split_block(t_block *block, size_t free_space)
 {

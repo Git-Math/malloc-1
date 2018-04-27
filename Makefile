@@ -6,7 +6,7 @@
 #    By: mcanal <mcanal@student.42.fr>              +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2014/11/29 13:16:03 by mcanal            #+#    #+#              #
-#    Updated: 2018/04/25 07:21:48 by mc               ###   ########.fr        #
+#    Updated: 2018/04/27 16:01:32 by mcanal           ###   ########.fr        #
 #                                                                              #
 #******************************************************************************#
 
@@ -20,8 +20,8 @@ TARGET = libft_malloc.so
 # file-names of the sources
 SRC_NAME = malloc.c free.c realloc.c show_alloc_mem.c calloc.c reallocarray.c \
 			find_free_block.c find_block_by_addr.c \
-			debug/debug.c debug/print_bytes.c debug/hex_dump.c \
-			util/ft_memcpy.c util/ft_bzero.c util/ft_strlen.c \
+			debug/debug.c debug/print_bytes.c debug/hex_dump.c debug/get_env.c \
+			util/ft_memcpy.c util/ft_bzero.c util/ft_strlen.c util/ft_memcmp.c \
 			util/ft_putnbr_fd.c util/ft_putstr_fd.c util/ft_isprint.c
 
 # folder-names of the sources

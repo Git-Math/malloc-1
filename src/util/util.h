@@ -6,7 +6,7 @@
 /*   By: mc <mc.maxcanal@gmail.com>                 +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/04/17 22:45:53 by mc                #+#    #+#             */
-/*   Updated: 2018/04/22 14:04:55 by mc               ###   ########.fr       */
+/*   Updated: 2018/04/27 16:00:44 by mcanal           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,5 +26,6 @@ size_t			ft_strlen(const char *str);
 void        	ft_putnbr_fd(int n, int fd);
 void        	ft_putstr_fd(char const *s, int fd);
 int     		ft_isprint(int i);
+int				ft_memcmp(const void *s1, const void *s2, size_t n);
 
 #endif
